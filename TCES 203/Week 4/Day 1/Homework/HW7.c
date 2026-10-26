@@ -24,6 +24,7 @@ int main(void)
     /* Step 3 state (2-D array) */
     int r = 0, c = 0;
     int m2d[ROWS][COLS] = {0};
+    int check = 0;
 
     do
     {
@@ -130,8 +131,32 @@ int main(void)
                - If n>0, refill the first n elements, then compute and print their sum
                - Also print sizeof(a1d[0]) in bytes
             */
+
+            //Compute and print capacity
+            int capacity = sizeof(a1d) / sizeof(a1d[0]);
+            int total_sum = 0;
+            printf("\nCapacity = %d\n", capacity);
+
+            //Clear storage of a1d
+            for (int i = 0; i < capacity; i++){
+                a1d[i] = 0;
+            }
+            
+            if (n > 0){
+                for (int i = 0; i < n; i++){
+                    printf("Enter integer %d: ", i + 1);
+                    scanf("%d", &a1d[i]);  
+                    total_sum += a1d[i];
+                }
+            }
+
+            printf("Sum of first %d elements = %d\n", n, total_sum);
+            printf("Size of a1d[0] in bytes =  %zu\n", sizeof(a1d[0]));
+            
             break;
         }
+        
+
         case 3:
         {
             /* TODO Step 3:
@@ -141,8 +166,83 @@ int main(void)
                - If square (r==c), transform into the identity matrix and print it
                  otherwise compute and print each row sum
             */
+            
+            //System does not account for not interger inputs, will bug out if nonint
+            while (1){
+                printf("Enter Rows (1..ROWS) and Cols (1..Cols): ");
+                scanf("%d %d", &r, &c);
+                if (r < 1 || r > ROWS || c < 1 || c > COLS){
+                    clear_input();
+                    printf("Invalid size.\n");
+                    continue;
+                }
+                break;    
+            }   
+            
+            //Read r*c integers into m2d row-by-row
+            printf("Enter %d x %d integers (row by row): ", r, c);
+            for (int i = 0; i < r; i++){
+                for (int j = 0; j < c; j++){
+                    if (scanf("%d", &m2d[i][j]) != 1) {
+                        clear_input();
+                        printf("Input error.\n");
+                        break;
+                    }    
+                }
+            }
+
+            printf("Matrix:\n");
+            //Print the matrix in a grid
+            for (int i = 0; i < r; i++){
+                for (int j = 0; j < c; j++){
+                    printf("%d ", m2d[i][j]);
+                }
+                printf("\n");
+            }
+
+            //Check if identity matrix 
+            if (r == c) {
+                for (int i = 0; i < r; i++){
+                    for (int j = 0; j < c; j++){
+                        if (j == i){
+                            m2d[i][j] = 1;
+                        } else{
+                            m2d[i][j] = 0;
+                        }
+                    }
+                }
+
+                check = 1;
+
+                printf("Matrix:\n");
+                //Print the matrix in a grid
+                for (int i = 0; i < r; i++){
+                    for (int j = 0; j < c; j++){
+                        printf("%d ", m2d[i][j]);
+                    }
+                    printf("\n");
+                }
+            }
+
+            
+
+            //Calculate Row Sums 
+            if (check == 0){
+                for (int i = 0; i < r; i++){
+                    int row_sum = 0;
+                    for (int j = 0; j < c; j++){
+                        row_sum += m2d[i][j];
+                    }
+                    printf("Row %d sum: %d\n", i + 1, row_sum);
+                }
+            }   else {
+                printf("Matrix is square, no row sums calculated.\n");
+            }
+
+            check = 0;
             break;
         }
+
         case 0:
             printf("Goodbye!\n");
             break;
