@@ -10,6 +10,7 @@ int main(void)
   printf("Enter number of entries in table: ");
   scanf("%d", &n);
 
+  //While loop
   i = 1;
   while (i <= n) {
     printf("%10d%10d\n", i, i * i);
