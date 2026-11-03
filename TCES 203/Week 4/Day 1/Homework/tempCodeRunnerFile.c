@@ -1,0 +1,14 @@
+ printf("Declare X and Y\n");
+            scanf("%d %d", &x, &y);
+            int *p = &x;
+            int *q = &y;
+            printf("x = %d, y = %d\n", x, y);
+            printf("*p = %d, *q = %d\n", *p, *q);
+            printf("&x = %p, p = %p\n", (void *)&x, (void *)p);
+            printf("&y = %p, q = %p\n", (void *)&y, (void *)q);
+            *p = *q;
+            printf("After *p = *q: x = %d, y = %d\n", x, y);
+            q = p;
+            *q += 5;
+            printf("After q = p and *q += 5: x = %d, y = %d\n", x, y);
+            break;

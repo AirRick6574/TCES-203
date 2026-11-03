@@ -29,16 +29,17 @@ void show_counters(void)
 /* Step 3: Use a pointer to modify a caller's variable. */
 void add_ten(int *value)
 {
-    /* TODO Step 3: Add 10 to the integer pointed to by value. */
-    (void)value;
+    *value += 10;
+    
 }
-/* Step 3: Swap the values stored at two addresses. */
+/* Step 3: Use a pointer to modify a caller's variable. */
 void swap(int *a, int *b)
 {
-    /* TODO Step 3: Swap *a and *b using a temporary int. */
-    (void)a;
-    (void)b;
+    int temp = *a;
+    *a = *b;
+    *b = temp;
 }
+
 /* Step 4: Return two answers through pointer parameters. */
 void max_min(int values[], int n, int *maximum, int *minimum)
 {
@@ -48,10 +49,20 @@ void max_min(int values[], int n, int *maximum, int *minimum)
     - Update *maximum and *minimum as needed.
     - The caller must ensure n >= 1.
     */
-    (void)values;
-    (void)n;
-    *maximum = 0; /* Placeholder; replace with your algorithm. */
-    *minimum = 0;
+    
+    *maximum = values[0];
+    *minimum = values[0];
+    for (int i = 1; i < n; i++) {
+        if (values[i] > *maximum) {
+            *maximum = values[i];
+        }
+        if (values[i] < *minimum) {
+            *minimum = values[i];
+        }
+    }   
+
+    return;
+
 }
 /* Step 4: Return the address of the larger of two integers. */
 int *larger_pointer(int *a, int *b)
@@ -59,8 +70,11 @@ int *larger_pointer(int *a, int *b)
     /* TODO Step 4: Return a if *a >= *b; otherwise return b.
     Never return the address of a local variable here.
     */
-    (void)b;
-    return a; /* Placeholder; replace with a comparison. */
+    if (*a >= *b) {
+        return a;
+    } else {
+        return b;
+    }
 }
 int main(void)
 {
@@ -123,33 +137,66 @@ int main(void)
             - Execute *p = *q; print x and y.
             - Execute q = p; then *q += 5; print x and y.
             */
-            printf("Step 2: Complete the TODO.\n");
+            printf("Declare X and Y\n");
+            scanf("%d %d", &x, &y);
+            int *p = &x;
+            int *q = &y;
+            printf("x = %d, y = %d\n", x, y);
+            printf("*p = %d, *q = %d\n", *p, *q);
+            printf("&x = %p, p = %p\n", (void *)&x, (void *)p);
+            printf("&y = %p, q = %p\n", (void *)&y, (void *)q);
+            *p = *q;
+            printf("After *p = *q: x = %d, y = %d\n", x, y);
+            q = p;
+            *q += 5;
+            printf("After q = p and *q += 5: x = %d, y = %d\n", x, y);
             break;
         }
         case 3:
         {
-            /* TODO Step 3:
-            - Read new values for x and y (check input).
-            - Print x and y before changes.
-            - Call add_ten(&x); print x and y.
-            - Call swap(&x, &y); print x and y again.
-            */
-            printf("Step 3: Complete the TODO.\n");
+
+            printf("Declare X and Y\n");
+            scanf("%d %d", &x, &y);
+
+            printf("Before changes: x = %d, y = %d\n", x, y);
+            add_ten(&x);
+            printf("After add_ten: x = %d, y = %d\n", x, y);
+            swap(&x, &y);
+            printf("After swap: x = %d, y = %d\n", x, y);
+
             break;
         }
         case 4:
         {
-            /* TODO Step 4:
-            - Ask for n (1..MAX_N) and reject invalid sizes.
-            - Read n integers into data[0..n-1].
-            - Declare int largest and smallest.
-            - Call max_min(data, n, &largest, &smallest).
-            - Print both results.
-            - Call larger_pointer(&largest, &smallest).
-            - Add 1 to the value through the returned pointer.
-            - Print largest and smallest once more.
-            */
-            printf("Step 4: Complete the TODO.\n");
+
+            printf("How many elements (1..%d)? ", MAX_N);
+            if (scanf("%d", &n) != 1) { 
+                clear_input(); 
+                printf("Input error.\n"); 
+                break; }
+            if (n < 1 || n > MAX_N) {
+                printf("Out of range.\n");
+                break;
+            }  else{
+                    printf("Enter %d integers:\n", n);
+                    for (int i = 0; i < n; i++) {
+                        if (scanf("%d", &data[i]) != 1) { 
+                            clear_input(); 
+                            printf("Input error.\n"); 
+                            n = 0; 
+                            break; 
+                        }
+                    } if (n == 0){
+                            break;
+                        }
+                }
+            int largest, smallest;
+            max_min(data, n, &largest, &smallest);
+            printf("Largest: %d, Smallest: %d\n", largest, smallest);
+            int *larger = larger_pointer(&largest, &smallest);
+            *larger += 1;
+            printf("After incrementing the larger value:\n");
+            printf("Largest: %d, Smallest: %d\n", largest, smallest);
             break;
         }
         case 0:
