@@ -8,8 +8,10 @@ using namespace std;
 #define DISTANCE_MAX 200
 #define DISTANCE_MIN 0
 #define MAX_BAT 100
+#define MIN_BAT 0
 
-int main() {
+int main()
+{
     // 1. Declare counters and variables
     int totalCycles = 0;
     int safeCycles = 0;
@@ -22,88 +24,121 @@ int main() {
     cout << "=== Car Polling Loop Simulation ===" << endl;
 
     // 2. Main polling loop (TODO: replace true with correct condition or sentinel check)
-    while (distanceToObstacleCm != -1) {
-        
-        //Distance
-        cout << "Enter distance (0–200 cm, –1 to quit): ";
+    while (distanceToObstacleCm != -1)
+    {
+
+        // Distance
+        cout << "Enter distance (0-200 cm, -1 to quit): ";
         cin >> distanceToObstacleCm;
-        if (distanceToObstacleCm == -1) {
-            continue;
-        }
-        
-        while (distanceToObstacleCm < DISTANCE_MIN || distanceToObstacleCm > DISTANCE_MAX){
+
+        // Validate distance
+        while ((distanceToObstacleCm < DISTANCE_MIN ||
+                distanceToObstacleCm > DISTANCE_MAX) &&
+               distanceToObstacleCm != -1)
+        {
+
             cout << "Not within range (0-200), try again: ";
             cin >> distanceToObstacleCm;
         }
 
-        //Battery
+        // Exit if sentinel is entered
+        if (distanceToObstacleCm == -1)
+        {
+            break;
+        }
+
+        // Battery
         cout << "Enter battery level (%): ";
         cin >> batteryPercent;
-        while (batteryPercent < DISTANCE_MIN || batteryPercent >= MAX_BAT){
+
+        // Validate battery
+        while (batteryPercent < MIN_BAT || batteryPercent > MAX_BAT)
+        {
             cout << "Not within range (0-100), try again: ";
             cin >> batteryPercent;
         }
 
-
-        //Drive Mode
-        int check = 0;
-
-        cout << "Enter drive command (F/B/L/R/S): "; 
-        cin >> (driveMode);
+        // Drive Mode
+        cout << "Enter drive command (F/B/L/R/S): ";
+        cin >> driveMode;
         driveMode = toupper(driveMode);
-        while (check == 0)
-        {
-            switch (driveMode){
-                case 'F':
-                    check = 1;
-                    break;
-                case 'B':
-                    check = 1;  
-                    break;
-                case 'L':
-                    check = 1;  
-                    break;
-                case 'R':
-                    check = 1;
-                    break;
-                case 'S':
-                    check = 1;
-                    break;
-                default:
-                    cout << "Incorrect Response, try again: ";
-                    cin >> (driveMode);
-                    driveMode = toupper(driveMode);
-                    break;
 
+        // Validate drive command
+        while (driveMode != 'F' && driveMode != 'B' &&
+               driveMode != 'L' && driveMode != 'R' &&
+               driveMode != 'S')
+        {
+
+            cout << "Invalid command, try again: ";
+            cin >> driveMode;
+            driveMode = toupper(driveMode);
+        }
+
+        //Safe Cycle Check
+        bool isPathClear = (distanceToObstacleCm >= 25);
+        bool isBatteryOK = (batteryPercent >= 20);
+        bool canMove = (isPathClear && isBatteryOK);
+
+        // Check safety conditions first
+        if (!(isPathClear || isBatteryOK || canMove))
+        {
+            emergencyStops++;
+            cout << "EMERGENCY STOP - unsafe cycle." << endl;
+            cout << "Left side: STOP" << endl;
+            cout << "Right side: STOP" << endl;
+        }
+        else
+        {
+            safeCycles++;
+
+            // Driving Decision and Motor Mapping
+            switch (driveMode)
+            {
+            case 'F': // Forward
+                cout << "Decision: MOVE FORWARD" << endl;
+                cout << "Motor mapping:" << endl;
+                cout << "Left side: FORWARD" << endl;
+                cout << "Right side: FORWARD" << endl;
+                break;
+
+            case 'B': // Backward
+                cout << "Decision: MOVE BACKWARD" << endl;
+                cout << "Motor mapping:" << endl;
+                cout << "Left side: BACKWARD" << endl;
+                cout << "Right side: BACKWARD" << endl;
+                break;
+
+            case 'L': // Left
+                cout << "Decision: TURN LEFT" << endl;
+                cout << "Motor mapping:" << endl;
+                cout << "Left side: BACKWARD" << endl;
+                cout << "Right side: FORWARD" << endl;
+                break;
+
+            case 'R': // Right
+                cout << "Decision: TURN RIGHT" << endl;
+                cout << "Motor mapping:" << endl;
+                cout << "Left side: FORWARD" << endl;
+                cout << "Right side: BACKWARD" << endl;
+                break;
+
+            case 'S': // Stop
+                cout << "Decision: STOP" << endl;
+                cout << "Motor mapping:" << endl;
+                cout << "Left side: STOP" << endl;
+                cout << "Right side: STOP" << endl;
+                break;
             }
         }
-        
-        // TODO: ask for distance and validate using while loop (Section 5.2)
-        // Sentinel: if user enters -1, break the loop
 
-        // TODO: ask for battery level and validate (must be 0–100)
-
-        // TODO: ask for drive command (F/B/L/R/S) and validate with while loop
-
-        // Once data is valid, increment totalCycles
-
-        // 3. Compute safety flags (TODO)
-        //bool isPathClear = /* TODO */;
-        //bool isBatteryOK = /* TODO */;
-        //bool canMove = /* TODO */;
-
-        // 4. Decision logic (TODO: use if/else)
-        // If not canMove → emergency stop
-        // Else print action based on driveMode
-
-        // 5. Update counters (safeCycles, emergencyStops)
-
-        // 6. Motor mapping (TODO: use switch on driveMode)
-        // Print simulated wheel directions for L298N
+        totalCycles++;
     }
 
-    // 7. After loop ends, print final report (TODO)
-    // Show totalCycles, safeCycles, emergencyStops, and percentage of safe cycles
+    //Final Report
+    cout << "\n=== Final Report ===" << endl;
+    cout << "Safe Cycles: " << safeCycles << endl;
+    cout << "Emergency Stops: " << emergencyStops << endl;
+    cout << "Safe Cycle Percentage: " << batteryPercent << "%" << endl;
 
     cout << "=== End of Simulation ===" << endl;
     return 0;
