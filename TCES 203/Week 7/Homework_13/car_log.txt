@@ -1,0 +1,17 @@
+Move Forward
+Move Forward
+Turn Left
+Move Forward
+Turn Left
+Move Forward
+Move Forward
+Move Forward
+Turn Right
+Activate Camera
+Turn Right
+Move Forward
+Move Forward
+Turn Left
+Move Backward
+Move Backward
+Move Backward

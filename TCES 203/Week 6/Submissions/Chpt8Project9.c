@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -5,10 +6,6 @@
 #define SIZE 10
 #define LIMIT 0
 
-//Create 10 x 10 array that will start with every text being "."
-//Have the program randomly walk from element to element, going up, down, left, or right, by one element. 
-//The walk will change each elemenmt to letters from A to Z, starting with A and ending with Z.
-//Use rand or srand to generate random numbers and divide by 4, the 0, 1, 2, 3 will repesent the direction to go. 
 int main(void){
     //Create array
     int direction, x = LIMIT, y = LIMIT; 
