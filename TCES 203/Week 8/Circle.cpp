@@ -22,3 +22,7 @@ void Circle::setRadius(double r) {
 double Circle::calcArea() {
     return 3.14 * pow(radius, 2);
 }
+
+//x -0.290000 mm
+//y -61.209998 mm
+//z 71.029998 mm
