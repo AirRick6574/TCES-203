@@ -36,3 +36,23 @@ void deeper()
 {
 	cout << "I am now inside the function deeper.\n";
 }
+
+int power(){
+	int choice;
+
+	switch (choice){
+		case 1: 
+			cout << fixed << showpoint << setprecision(2);
+			break;
+		case 2:
+		case 3:
+			cout << fixed << showpoint << setprecision(4);
+			break;
+		case 4:
+			cout << fixed << showpoint << setprecision(6);
+			break;
+		default:
+			cout
+	}
+
+}
